@@ -2,17 +2,21 @@ package com.zwb.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.zwb.entity.AreaInfo;
 import com.zwb.entity.PersonInfo;
+import com.zwb.service.IAreaInfoService;
 import com.zwb.service.IPersonInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -23,12 +27,37 @@ import java.util.List;
  * @since 2021-10-31
  */
 @Api
-@RestController
+@Controller
 @RequestMapping("/zwb/person-info")
 public class PersonInfoController {
 
     @Autowired
     IPersonInfoService iPersonInfoService;
+
+    @Autowired
+    IAreaInfoService iAreaInfoService;
+
+    @ApiOperation("index页面")
+    @RequestMapping("index")
+    public String index(Model model){
+        List<PersonInfo> list = iPersonInfoService.list();
+        model.addAttribute("list",list);
+        return "index";
+    }
+
+    @ApiOperation("修改信息")
+    @RequestMapping("/update/{id}")
+    public String update(@PathVariable(name = "id") int id ,Model model){
+        QueryWrapper<PersonInfo> personInfoQueryWrapper = new QueryWrapper<>();
+        personInfoQueryWrapper.eq("person_id",id);
+        PersonInfo one = iPersonInfoService.getOne(personInfoQueryWrapper);
+        model.addAttribute("one",one);
+        //查询所有编码
+        List<AreaInfo> list = iAreaInfoService.list();
+        model.addAttribute("list",list);
+
+        return "update";
+    }
 
     @ApiOperation("查询所有数据")
     @PostMapping("/allPersonInfo")
@@ -47,6 +76,9 @@ public class PersonInfoController {
     @ApiOperation("修改")
     @PostMapping("/updatePersonInfo")
     public boolean updatePersonInfo(PersonInfo personInfo){
+        Integer personAreaId = personInfo.getPersonAreaId();
+        System.out.print(personAreaId);
+
         QueryWrapper<PersonInfo> wrapper = new QueryWrapper<>();
         wrapper.eq("person_id",personInfo.getPersonId());
         boolean update = iPersonInfoService.update(personInfo,wrapper);
