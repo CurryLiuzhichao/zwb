@@ -16,7 +16,7 @@
     用户所在地
     <select name="personAreaId" >
         <#list list as ls>
-            <option value="${ls.areaId}">${ls.areaName}</option>
+            <option value="${ls.areaId}" >${ls.areaName}</option>
         </#list>
     </select>
 

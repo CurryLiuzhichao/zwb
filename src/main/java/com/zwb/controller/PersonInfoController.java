@@ -13,10 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.servlet.ModelAndView;
-
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -75,14 +72,21 @@ public class PersonInfoController {
 
     @ApiOperation("修改")
     @PostMapping("/updatePersonInfo")
-    public boolean updatePersonInfo(PersonInfo personInfo){
+    public String updatePersonInfo(PersonInfo personInfo ,Model model){
         Integer personAreaId = personInfo.getPersonAreaId();
         System.out.print(personAreaId);
 
         QueryWrapper<PersonInfo> wrapper = new QueryWrapper<>();
         wrapper.eq("person_id",personInfo.getPersonId());
         boolean update = iPersonInfoService.update(personInfo,wrapper);
-        return update;
+        if (update){
+            model.addAttribute("msg","更新成功");
+            return "update";
+        }else{
+            model.addAttribute("msg","更新失败");
+            return "update";
+        }
+
     }
 
     @ApiOperation("删除")

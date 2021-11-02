@@ -24,7 +24,7 @@ public class AreaInfo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "地区编号" , example = "2")
-    private Integer areaId;
+    private String areaId;
 
     @ApiModelProperty(value = "地区名称")
     private String areaName;
