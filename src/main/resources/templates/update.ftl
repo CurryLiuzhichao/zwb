@@ -4,9 +4,18 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <title>Hello World!</title>
+    <style>
+        .dalog{
+            width: 70px;
+            height: 70px;
+            border: 1px solid pink;
+            display: none;
+        }
+
+    </style>
 </head>
 <body>
-<form action="/zwb/person-info/updatePersonInfo" method="post" >
+<form action="/zwb/person-info/updatePersonInfo" type="post">
     用户id：
     <input type="text" name="personId" value="${one.personId}">
     <br>
@@ -27,8 +36,21 @@
     家庭住址
     <input type="text" name="personAddress" value="${one.personAddress}">
     <br>
-    <button type="submit" value="Submit">提交修改</button>
+    <button type="submit" value="Submit" onclick="savaUpdate()" >提交修改</button>
 </form>
 
+
+
+<script>
+    savaUpdate=function () {
+        // console.log(1111)1111
+        alert("编辑成功！");
+        setTimeout(function (){
+            // window.location.href="/zwb/person-info/index"
+            location.href="http://localhost:8080/zwb/person-info/index";
+        },2000)
+
+    }
+</script>
 </body>
 </html>
