@@ -71,7 +71,7 @@ public class PersonInfoController {
     }
 
     @ApiOperation("修改")
-    @PostMapping("/updatePersonInfo")
+    @RequestMapping("/updatePersonInfo")
     public String updatePersonInfo(PersonInfo personInfo ,Model model){
         Integer personAreaId = personInfo.getPersonAreaId();
         System.out.print(personAreaId);
@@ -80,8 +80,10 @@ public class PersonInfoController {
         wrapper.eq("person_id",personInfo.getPersonId());
         boolean update = iPersonInfoService.update(personInfo,wrapper);
         if (update){
-            model.addAttribute("msg","更新成功");
-            return "update";
+//            model.addAttribute("msg","更新成功");
+            List<PersonInfo> list = iPersonInfoService.list();
+            model.addAttribute("list",list);
+            return "index";
         }else{
             model.addAttribute("msg","更新失败");
             return "update";
@@ -90,10 +92,18 @@ public class PersonInfoController {
     }
 
     @ApiOperation("删除")
-    @PostMapping("/delectPersonInfo")
-    public boolean delectPersonInfo(Integer id){
+    @RequestMapping("/delectPersonInfo/{id}")
+    public String delectPersonInfo(@PathVariable(name = "id") int id ,Model model){
         boolean delete = iPersonInfoService.removeById(id);
-        return delete;
+        if (delete){
+//            model.addAttribute("msg","更新成功");
+            List<PersonInfo> list = iPersonInfoService.list();
+            model.addAttribute("list",list);
+            return "index";
+        }else{
+            model.addAttribute("msg","更新失败");
+            return "index";
+        }
     }
 
     @ApiOperation("查询")

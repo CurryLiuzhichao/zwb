@@ -46,8 +46,9 @@
         // console.log(1111)1111
         alert("编辑成功！");
         setTimeout(function (){
-            // window.location.href="/zwb/person-info/index"
-            location.href="http://localhost:8080/zwb/person-info/index";
+            // window.location.href="http://localhost:8080/zwb/person-info/index"
+            window.location.href = document.referrer;//返回上一页并刷新
+            // location.href="http://localhost:8080/zwb/person-info/index";
         },2000)
 
     }
